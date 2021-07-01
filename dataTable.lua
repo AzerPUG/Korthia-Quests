@@ -3,7 +3,10 @@ if AZP.KorthiaQuests == nil then AZP.KorthiaQuests = {} end
 
 AZP.KorthiaQuests.Quests =
 {
-    IDs = {63860, 63892, 63899, 63909, 63910, 63911, 63912, 63913, 63914, 63915, 63916, 63917, 63918, 63919, 63920, 63921, 63924},
+    IDs =
+    {
+        63860, 63892, 63899, 63909, 63910, 63911, 63912, 63913, 63914, 63915, 63916, 63917, 63918, 63919, 63920, 63921, 63924
+    },
     [63860] = {Name = "Talisman of the Eternal Scholar",},
     [63892] = {Name = "Diviner's Rune Chits",},
     [63899] = {Name = "Book of Binding: The Mad Witch",},
