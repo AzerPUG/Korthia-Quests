@@ -11,7 +11,9 @@ function AZP.KorthiaQuests:OnLoadSelf()
     EventFrame = CreateFrame("Frame", nil)
     EventFrame:RegisterEvent("VARIABLES_LOADED")
     EventFrame:SetScript("OnEvent", function(...) AZP.KorthiaQuests:OnEvent(...) end)
+end
 
+function AZP.KorthiaQuests:CreateUserFrame()
     AZPKQSelfFrame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
     AZPKQSelfFrame:SetPoint("CENTER", 0, 250)
     AZPKQSelfFrame:SetSize(275, 380)
@@ -30,9 +32,7 @@ function AZP.KorthiaQuests:OnLoadSelf()
     AZPKQSelfFrame.closeButton:SetSize(25, 25)
     AZPKQSelfFrame.closeButton:SetPoint("TOPRIGHT", AZPKQSelfFrame, "TOPRIGHT", 2, 2)
     AZPKQSelfFrame.closeButton:SetScript("OnClick", function() AZP.KorthiaQuests:ShowHideFrame() end )
-end
 
-function AZP.KorthiaQuests:FillUserFrame()
     local Quests = AZP.KorthiaQuests.Quests
     if AZPKQSelfFrame.QuestLabels == nil then AZPKQSelfFrame.QuestLabels = {} end
     for i = 1, #Quests.IDs do
@@ -58,7 +58,7 @@ function AZP.KorthiaQuests:OnEvent(self, event, ...)
 end
 
 function AZP.KorthiaQuests.Events:VariablesLoaded()
-    AZP.KorthiaQuests:FillUserFrame()
+    C_Timer.NewTimer(5, function() AZP.KorthiaQuests:CreateUserFrame() end)
 end
 
 function AZP.KorthiaQuests:ShowHideFrame()
