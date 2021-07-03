@@ -1,7 +1,7 @@
 if AZP == nil then AZP = {} end
 if AZP.VersionControl == nil then AZP.VersionControl = {} end
 
-AZP.VersionControl["KorthiaQuests"] = 1
+AZP.VersionControl["KorthiaQuests"] = 3
 if AZP.KorthiaQuests == nil then AZP.KorthiaQuests = {} end
 if AZP.KorthiaQuests.Events == nil then AZP.KorthiaQuests.Events = {} end
 
@@ -17,7 +17,7 @@ end
 function AZP.KorthiaQuests:CreateUserFrame()
     AZPKQSelfFrame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
     AZPKQSelfFrame:SetPoint("CENTER", 0, 250)
-    AZPKQSelfFrame:SetSize(275, 380)
+    AZPKQSelfFrame:SetSize(275, 480)
     AZPKQSelfFrame:SetBackdrop({
         bgFile = "Interface/Tooltips/UI-Tooltip-Background",
         edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
@@ -42,6 +42,22 @@ function AZP.KorthiaQuests:CreateUserFrame()
         AZPKQSelfFrame.QuestLabels[i]:SetPoint("TOPLEFT", 10, -20 * i -20)
     end
     AZP.KorthiaQuests.Events:QuestFinished()
+end
+
+function AZP.KorthiaQuests.Events:QuestFinished()
+    local Quests = AZP.KorthiaQuests.Quests
+    for i = 1, #Quests.IDs do
+        local curID = Quests.IDs[i]
+        local QColor = ""
+        if C_QuestLog.IsQuestFlaggedCompleted(curID) == true then
+            QColor = "|cFF00FF00"
+        elseif C_QuestLog.IsOnQuest(curID) == true then
+            QColor = "|cFFFFFF00"
+        elseif C_QuestLog.IsQuestFlaggedCompleted(curID) == false then
+            QColor = "|cFFFF0000"
+        end
+        AZPKQSelfFrame.QuestLabels[i]:SetText(QColor .. curID .. " - " .. Quests[curID].Name .. "|r")
+    end
 end
 
 function AZP.KorthiaQuests.Events:QuestFinished()
