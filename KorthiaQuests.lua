@@ -1,7 +1,7 @@
 if AZP == nil then AZP = {} end
 if AZP.VersionControl == nil then AZP.VersionControl = {} end
 
-AZP.VersionControl["KorthiaQuests"] = 4
+AZP.VersionControl["KorthiaQuests"] = 5
 if AZP.KorthiaQuests == nil then AZP.KorthiaQuests = {} end
 if AZP.KorthiaQuests.Events == nil then AZP.KorthiaQuests.Events = {} end
 
@@ -21,8 +21,8 @@ function AZP.KorthiaQuests:CreateUserFrame()
     AZPKQSelfFrame:EnableMouse(true)
     AZPKQSelfFrame:SetMovable(true)
     AZPKQSelfFrame:RegisterForDrag("LeftButton")
-    AZPKQSelfFrame:SetScript("OnDragStart", AZPCoreCollectiveMainFrame.StartMoving)
-    AZPKQSelfFrame:SetScript("OnDragStop", AZPCoreCollectiveMainFrame.StopMovingOrSizing)
+    AZPKQSelfFrame:SetScript("OnDragStart", AZPKQSelfFrame.StartMoving)
+    AZPKQSelfFrame:SetScript("OnDragStop", AZPKQSelfFrame.StopMovingOrSizing)
     AZPKQSelfFrame:SetBackdrop({
         bgFile = "Interface/Tooltips/UI-Tooltip-Background",
         edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
