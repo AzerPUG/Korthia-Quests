@@ -3,7 +3,7 @@
 ## Author: Tex & AzerPUG Gaming Community (www.azerpug.com/discord)
 ## Notes: templateAddon is a Template Addon
 ## Version: SL 9.1 (For actual addon version, check KorthiaQuests.lua)
-## SavedVariablesPerCharacter: templateAddonVariable
+## SavedVariablesPerCharacter: AZPKQFrameLocation
 
 dataTable.lua
 SlashCommands.lua

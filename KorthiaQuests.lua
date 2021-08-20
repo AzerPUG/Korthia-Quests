@@ -1,9 +1,11 @@
 if AZP == nil then AZP = {} end
 if AZP.VersionControl == nil then AZP.VersionControl = {} end
 
-AZP.VersionControl["KorthiaQuests"] = 5
+AZP.VersionControl["KorthiaQuests"] = 7
 if AZP.KorthiaQuests == nil then AZP.KorthiaQuests = {} end
 if AZP.KorthiaQuests.Events == nil then AZP.KorthiaQuests.Events = {} end
+
+if AZPKQFrameLocation == nil then AZPKQFrameLocation = {"CENTER", 0, 0} end
 
 local EventFrame, AZPKQSelfFrame = nil, nil
 
@@ -17,12 +19,12 @@ end
 function AZP.KorthiaQuests:CreateUserFrame()
     AZPKQSelfFrame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
     AZPKQSelfFrame:SetPoint("CENTER", 0, 250)
-    AZPKQSelfFrame:SetSize(275, 480)
+    AZPKQSelfFrame:SetSize(375, 385)
     AZPKQSelfFrame:EnableMouse(true)
     AZPKQSelfFrame:SetMovable(true)
     AZPKQSelfFrame:RegisterForDrag("LeftButton")
     AZPKQSelfFrame:SetScript("OnDragStart", AZPKQSelfFrame.StartMoving)
-    AZPKQSelfFrame:SetScript("OnDragStop", AZPKQSelfFrame.StopMovingOrSizing)
+    AZPKQSelfFrame:SetScript("OnDragStop", function() AZPKQSelfFrame:StopMovingOrSizing() AZP.KorthiaQuests:SaveLocation() end)
     AZPKQSelfFrame:SetBackdrop({
         bgFile = "Interface/Tooltips/UI-Tooltip-Background",
         edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
@@ -39,34 +41,37 @@ function AZP.KorthiaQuests:CreateUserFrame()
     AZPKQSelfFrame.closeButton:SetPoint("TOPRIGHT", AZPKQSelfFrame, "TOPRIGHT", 2, 2)
     AZPKQSelfFrame.closeButton:SetScript("OnClick", function() AZP.KorthiaQuests:ShowHideFrame() end )
 
-    if AZPKQSelfFrame.QuestLabels == nil then AZPKQSelfFrame.QuestLabels = {} end
+    if AZPKQSelfFrame.QuestIDLabels == nil then AZPKQSelfFrame.QuestIDLabels = {} end
+    if AZPKQSelfFrame.QuestNameLabels == nil then AZPKQSelfFrame.QuestNameLabels = {} end
+    if AZPKQSelfFrame.QuestLocationLabels == nil then AZPKQSelfFrame.QuestLocationLabels = {} end
 
     local Quests = AZP.KorthiaQuests.Quests
     for i = 1, #Quests.IDs do
-        AZPKQSelfFrame.QuestLabels[i] = AZPKQSelfFrame:CreateFontString("AZPKQSelfFrame", "ARTWORK", "GameFontNormal")
-        AZPKQSelfFrame.QuestLabels[i]:SetPoint("TOPLEFT", 10, -20 * i -20)
+        AZPKQSelfFrame.QuestIDLabels[i] = AZPKQSelfFrame:CreateFontString("AZPKQSelfFrame", "ARTWORK", "GameFontNormal")
+        AZPKQSelfFrame.QuestIDLabels[i]:SetPoint("TOPLEFT", 10, -20 * i -20)
+
+        AZPKQSelfFrame.QuestNameLabels[i] = AZPKQSelfFrame:CreateFontString("AZPKQSelfFrame", "ARTWORK", "GameFontNormal")
+        AZPKQSelfFrame.QuestNameLabels[i]:SetPoint("TOP", 0, -20 * i -20)
+
+        AZPKQSelfFrame.QuestLocationLabels[i] = AZPKQSelfFrame:CreateFontString("AZPKQSelfFrame", "ARTWORK", "GameFontNormal")
+        AZPKQSelfFrame.QuestLocationLabels[i]:SetPoint("TOPRIGHT", -10, -20 * i -20)
     end
     AZP.KorthiaQuests.Events:QuestFinished()
 end
 
-function AZP.KorthiaQuests.Events:QuestFinished()
-    local Quests = AZP.KorthiaQuests.Quests
-    for i = 1, #Quests.IDs do
-        local curID = Quests.IDs[i]
-        local QColor = ""
-        if C_QuestLog.IsQuestFlaggedCompleted(curID) == true then
-            QColor = "|cFF00FF00"
-        elseif C_QuestLog.IsOnQuest(curID) == true then
-            QColor = "|cFFFFFF00"
-        elseif C_QuestLog.IsQuestFlaggedCompleted(curID) == false then
-            QColor = "|cFFFF0000"
-        end
-        AZPKQSelfFrame.QuestLabels[i]:SetText(QColor .. curID .. " - " .. Quests[curID].Name .. "|r")
-    end
+function AZP.KorthiaQuests:SaveLocation()
+    local temp = {}
+    temp[1], temp[2], temp[3], temp[4], temp[5] = AZPKQSelfFrame:GetPoint()
+    AZPKQFrameLocation = temp
+end
+
+function AZP.KorthiaQuests:LoadLocation()
+    AZPKQSelfFrame:SetPoint(AZPKQFrameLocation[1], AZPKQFrameLocation[4], AZPKQFrameLocation[5])
 end
 
 function AZP.KorthiaQuests.Events:QuestFinished()
     local Quests = AZP.KorthiaQuests.Quests
+    local ColorEnd = "|r"
     for i = 1, #Quests.IDs do
         local curID = Quests.IDs[i]
         local QColor = ""
@@ -77,7 +82,14 @@ function AZP.KorthiaQuests.Events:QuestFinished()
         elseif C_QuestLog.IsQuestFlaggedCompleted(curID) == false then
             QColor = "|cFFFF0000"
         end
-        AZPKQSelfFrame.QuestLabels[i]:SetText(QColor .. curID .. " - " .. Quests[curID].Name .. "|r")
+
+        AZPKQSelfFrame.QuestIDLabels[i]:SetText(string.format("%s%d%s", QColor, curID, ColorEnd))
+        AZPKQSelfFrame.QuestNameLabels[i]:SetText(string.format("%s%s%s", QColor, Quests[curID].Name, ColorEnd))
+        if Quests[curID].Location.xVal == nil or Quests[curID].Location.yVal == nil then
+            AZPKQSelfFrame.QuestLocationLabels[i]:SetText(string.format("%s%s%s", QColor, "Treassures", ColorEnd))
+        else
+            AZPKQSelfFrame.QuestLocationLabels[i]:SetText(string.format("%s%.1f - %.1f%s", QColor, Quests[curID].Location.xVal, Quests[curID].Location.yVal, ColorEnd))
+        end
     end
 end
 
@@ -90,7 +102,7 @@ function AZP.KorthiaQuests:OnEvent(self, event, ...)
 end
 
 function AZP.KorthiaQuests.Events:VariablesLoaded()
-    C_Timer.NewTimer(5, function() AZP.KorthiaQuests:CreateUserFrame() end)
+    C_Timer.NewTimer(5, function() AZP.KorthiaQuests:CreateUserFrame() AZP.KorthiaQuests:LoadLocation() end)
 end
 
 function AZP.KorthiaQuests:ShowHideFrame()
