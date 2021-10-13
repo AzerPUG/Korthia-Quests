@@ -1,7 +1,7 @@
 if AZP == nil then AZP = {} end
 if AZP.VersionControl == nil then AZP.VersionControl = {} end
 
-AZP.VersionControl["KorthiaQuests"] = 7
+AZP.VersionControl["KorthiaQuests"] = 8
 if AZP.KorthiaQuests == nil then AZP.KorthiaQuests = {} end
 if AZP.KorthiaQuests.Events == nil then AZP.KorthiaQuests.Events = {} end
 
@@ -9,10 +9,13 @@ if AZPKQFrameLocation == nil then AZPKQFrameLocation = {"CENTER", 0, 0} end
 
 local EventFrame, AZPKQSelfFrame = nil, nil
 
+local TomTomLoaded = false
+
 function AZP.KorthiaQuests:OnLoadSelf()
     EventFrame = CreateFrame("Frame", nil)
     EventFrame:RegisterEvent("VARIABLES_LOADED")
     EventFrame:RegisterEvent("QUEST_FINISHED")
+    EventFrame:RegisterEvent("ADDON_LOADED")
     EventFrame:SetScript("OnEvent", function(...) AZP.KorthiaQuests:OnEvent(...) end)
 end
 
@@ -53,8 +56,24 @@ function AZP.KorthiaQuests:CreateUserFrame()
         AZPKQSelfFrame.QuestNameLabels[i] = AZPKQSelfFrame:CreateFontString("AZPKQSelfFrame", "ARTWORK", "GameFontNormal")
         AZPKQSelfFrame.QuestNameLabels[i]:SetPoint("TOP", 0, -20 * i -20)
 
-        AZPKQSelfFrame.QuestLocationLabels[i] = AZPKQSelfFrame:CreateFontString("AZPKQSelfFrame", "ARTWORK", "GameFontNormal")
+        AZPKQSelfFrame.QuestLocationLabels[i] = CreateFrame("Frame", nil, AZPKQSelfFrame)
+        AZPKQSelfFrame.QuestLocationLabels[i]:SetSize(60, 16)
         AZPKQSelfFrame.QuestLocationLabels[i]:SetPoint("TOPRIGHT", -10, -20 * i -20)
+        AZPKQSelfFrame.QuestLocationLabels[i]:SetScript("OnMouseDown",
+            function()
+                if i ~= 2 then
+                    if TomTomLoaded == true then
+                        local curID = Quests.IDs[i]
+                        local curX = Quests[curID].Location.xVal
+                        local curY = Quests[curID].Location.yVal
+                        local curName = Quests[curID].Name
+                        TomTom:AddWaypoint(1961, curX/100, curY/100, {title = curName, persistent = false, source = "Added by AzerPUG's Korthia Quests."})
+                    end
+                end
+            end)
+
+        AZPKQSelfFrame.QuestLocationLabels[i].text = AZPKQSelfFrame.QuestLocationLabels[i]:CreateFontString("AZPKQSelfFrame", "ARTWORK", "GameFontNormal")
+        AZPKQSelfFrame.QuestLocationLabels[i].text:SetPoint("CENTER", 0, 0)
     end
     AZP.KorthiaQuests.Events:QuestFinished()
 end
@@ -86,9 +105,9 @@ function AZP.KorthiaQuests.Events:QuestFinished()
         AZPKQSelfFrame.QuestIDLabels[i]:SetText(string.format("%s%d%s", QColor, curID, ColorEnd))
         AZPKQSelfFrame.QuestNameLabels[i]:SetText(string.format("%s%s%s", QColor, Quests[curID].Name, ColorEnd))
         if Quests[curID].Location.xVal == nil or Quests[curID].Location.yVal == nil then
-            AZPKQSelfFrame.QuestLocationLabels[i]:SetText(string.format("%s%s%s", QColor, "Treassures", ColorEnd))
+            AZPKQSelfFrame.QuestLocationLabels[i].text:SetText(string.format("%s%s%s", QColor, "Treassures", ColorEnd))
         else
-            AZPKQSelfFrame.QuestLocationLabels[i]:SetText(string.format("%s%.1f - %.1f%s", QColor, Quests[curID].Location.xVal, Quests[curID].Location.yVal, ColorEnd))
+            AZPKQSelfFrame.QuestLocationLabels[i].text:SetText(string.format("%s%.1f - %.1f%s", QColor, Quests[curID].Location.xVal, Quests[curID].Location.yVal, ColorEnd))
         end
     end
 end
@@ -98,6 +117,9 @@ function AZP.KorthiaQuests:OnEvent(self, event, ...)
         AZP.KorthiaQuests.Events:VariablesLoaded()
     elseif event == "QUEST_FINISHED" then
         C_Timer.NewTimer(5, function() AZP.KorthiaQuests.Events:QuestFinished() end)
+    elseif event == "ADDON_LOADED" then
+        local AddOnName = ...
+        if AddOnName == "TomTom" then TomTomLoaded = true end
     end
 end
 
