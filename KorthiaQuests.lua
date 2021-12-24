@@ -1,9 +1,8 @@
 if AZP == nil then AZP = {} end
 if AZP.VersionControl == nil then AZP.VersionControl = {} end
 
-AZP.VersionControl["KorthiaQuests"] = 8
-if AZP.KorthiaQuests == nil then AZP.KorthiaQuests = {} end
-if AZP.KorthiaQuests.Events == nil then AZP.KorthiaQuests.Events = {} end
+if AZP.ZoneQuests.Korthia == nil then AZP.ZoneQuests.Korthia = {} end
+if AZP.ZoneQuests.Korthia.Events == nil then AZP.ZoneQuests.Korthia.Events = {} end
 
 if AZPKQFrameLocation == nil then AZPKQFrameLocation = {"CENTER", 0, 0} end
 
@@ -11,15 +10,15 @@ local EventFrame, AZPKQSelfFrame = nil, nil
 
 local TomTomLoaded = false
 
-function AZP.KorthiaQuests:OnLoadSelf()
+function AZP.ZoneQuests.Korthia:OnLoadSelf()
     EventFrame = CreateFrame("Frame", nil)
     EventFrame:RegisterEvent("VARIABLES_LOADED")
     EventFrame:RegisterEvent("QUEST_FINISHED")
     EventFrame:RegisterEvent("ADDON_LOADED")
-    EventFrame:SetScript("OnEvent", function(...) AZP.KorthiaQuests:OnEvent(...) end)
+    EventFrame:SetScript("OnEvent", function(...) AZP.ZoneQuests.Korthia:OnEvent(...) end)
 end
 
-function AZP.KorthiaQuests:CreateUserFrame()
+function AZP.ZoneQuests.Korthia:CreateUserFrame()
     AZPKQSelfFrame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
     AZPKQSelfFrame:SetPoint("CENTER", 0, 250)
     AZPKQSelfFrame:SetSize(375, 385)
@@ -27,7 +26,7 @@ function AZP.KorthiaQuests:CreateUserFrame()
     AZPKQSelfFrame:SetMovable(true)
     AZPKQSelfFrame:RegisterForDrag("LeftButton")
     AZPKQSelfFrame:SetScript("OnDragStart", AZPKQSelfFrame.StartMoving)
-    AZPKQSelfFrame:SetScript("OnDragStop", function() AZPKQSelfFrame:StopMovingOrSizing() AZP.KorthiaQuests:SaveLocation() end)
+    AZPKQSelfFrame:SetScript("OnDragStop", function() AZPKQSelfFrame:StopMovingOrSizing() AZP.ZoneQuests.Korthia:SaveLocation() end)
     AZPKQSelfFrame:SetBackdrop({
         bgFile = "Interface/Tooltips/UI-Tooltip-Background",
         edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
@@ -42,13 +41,13 @@ function AZP.KorthiaQuests:CreateUserFrame()
     AZPKQSelfFrame.closeButton = CreateFrame("Button", nil, AZPKQSelfFrame, "UIPanelCloseButton")
     AZPKQSelfFrame.closeButton:SetSize(25, 25)
     AZPKQSelfFrame.closeButton:SetPoint("TOPRIGHT", AZPKQSelfFrame, "TOPRIGHT", 2, 2)
-    AZPKQSelfFrame.closeButton:SetScript("OnClick", function() AZP.KorthiaQuests:ShowHideFrame() end )
+    AZPKQSelfFrame.closeButton:SetScript("OnClick", function() AZPKQSelfFrame:Hide() end )
 
     if AZPKQSelfFrame.QuestIDLabels == nil then AZPKQSelfFrame.QuestIDLabels = {} end
     if AZPKQSelfFrame.QuestNameLabels == nil then AZPKQSelfFrame.QuestNameLabels = {} end
     if AZPKQSelfFrame.QuestLocationLabels == nil then AZPKQSelfFrame.QuestLocationLabels = {} end
 
-    local Quests = AZP.KorthiaQuests.Quests
+    local Quests = AZP.ZoneQuests.Quests.Korthia
     for i = 1, #Quests.IDs do
         AZPKQSelfFrame.QuestIDLabels[i] = AZPKQSelfFrame:CreateFontString("AZPKQSelfFrame", "ARTWORK", "GameFontNormal")
         AZPKQSelfFrame.QuestIDLabels[i]:SetPoint("TOPLEFT", 10, -20 * i -20)
@@ -75,21 +74,24 @@ function AZP.KorthiaQuests:CreateUserFrame()
         AZPKQSelfFrame.QuestLocationLabels[i].text = AZPKQSelfFrame.QuestLocationLabels[i]:CreateFontString("AZPKQSelfFrame", "ARTWORK", "GameFontNormal")
         AZPKQSelfFrame.QuestLocationLabels[i].text:SetPoint("CENTER", 0, 0)
     end
-    AZP.KorthiaQuests.Events:QuestFinished()
+    AZP.ZoneQuests.Korthia.Events:QuestFinished()
+
+    AZP.ZoneQuests.ZoneFrames.Korthia = AZPKQSelfFrame
+    AZPKQSelfFrame:Hide()
 end
 
-function AZP.KorthiaQuests:SaveLocation()
+function AZP.ZoneQuests.Korthia:SaveLocation()
     local temp = {}
     temp[1], temp[2], temp[3], temp[4], temp[5] = AZPKQSelfFrame:GetPoint()
     AZPKQFrameLocation = temp
 end
 
-function AZP.KorthiaQuests:LoadLocation()
+function AZP.ZoneQuests.Korthia:LoadLocation()
     AZPKQSelfFrame:SetPoint(AZPKQFrameLocation[1], AZPKQFrameLocation[4], AZPKQFrameLocation[5])
 end
 
-function AZP.KorthiaQuests.Events:QuestFinished()
-    local Quests = AZP.KorthiaQuests.Quests
+function AZP.ZoneQuests.Korthia.Events:QuestFinished()
+    local Quests = AZP.ZoneQuests.Quests.Korthia
     local ColorEnd = "|r"
     for i = 1, #Quests.IDs do
         local curID = Quests.IDs[i]
@@ -112,38 +114,21 @@ function AZP.KorthiaQuests.Events:QuestFinished()
     end
 end
 
-function AZP.KorthiaQuests:OnEvent(self, event, ...)
+function AZP.ZoneQuests.Korthia:OnEvent(self, event, ...)
     if event == "VARIABLES_LOADED" then
-        AZP.KorthiaQuests.Events:VariablesLoaded()
+        AZP.ZoneQuests.Korthia.Events:VariablesLoaded()
     elseif event == "QUEST_FINISHED" then
-        C_Timer.NewTimer(5, function() AZP.KorthiaQuests.Events:QuestFinished() end)
+        C_Timer.NewTimer(5, function() AZP.ZoneQuests.Korthia.Events:QuestFinished() end)
     elseif event == "ADDON_LOADED" then
         local AddOnName = ...
         if AddOnName == "TomTom" then TomTomLoaded = true end
     end
 end
 
-function AZP.KorthiaQuests.Events:VariablesLoaded()
-    C_Timer.NewTimer(5, function() AZP.KorthiaQuests:CreateUserFrame() AZP.KorthiaQuests:LoadLocation() end)
+function AZP.ZoneQuests.Korthia.Events:VariablesLoaded()
+    C_Timer.NewTimer(5, function() AZP.ZoneQuests.Korthia:CreateUserFrame() AZP.ZoneQuests.Korthia:LoadLocation() end)
 end
 
-function AZP.KorthiaQuests:ShowHideFrame()
-    if AZPKQSelfFrame:IsShown() then
-        AZPKQSelfFrame:Hide()
-        --AZPCoreShown = false
-    elseif not AZPKQSelfFrame:IsShown() then
-        AZPKQSelfFrame:Show()
-        --AZPCoreShown = true
-    end
-end
+AZP.ZoneQuests.Korthia:OnLoadSelf()
 
-AZP.KorthiaQuests:OnLoadSelf()
 
-AZP.SlashCommands["KQ"] = function()
-    AZP.KorthiaQuests:ShowHideFrame()
-end
-
-AZP.SlashCommands["kq"] = AZP.SlashCommands["KQ"]
-AZP.SlashCommands["korthia"] = AZP.SlashCommands["KQ"]
-AZP.SlashCommands["korthia quests"] = AZP.SlashCommands["KQ"]
-AZP.SlashCommands["Korthia Quests"] = AZP.SlashCommands["KQ"]
