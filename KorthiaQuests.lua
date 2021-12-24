@@ -11,12 +11,47 @@ local EventFrame, AZPKQSelfFrame = nil, nil
 
 local TomTomLoaded = false
 
+local messageShow = false
+
 function AZP.KorthiaQuests:OnLoadSelf()
     EventFrame = CreateFrame("Frame", nil)
     EventFrame:RegisterEvent("VARIABLES_LOADED")
     EventFrame:RegisterEvent("QUEST_FINISHED")
     EventFrame:RegisterEvent("ADDON_LOADED")
     EventFrame:SetScript("OnEvent", function(...) AZP.KorthiaQuests:OnEvent(...) end)
+
+    if messageShow == false then
+        local RenamingMessage = CreateFrame("FRAME", nil, UIParent, "BackdropTemplate")
+        RenamingMessage:SetSize(200, 200)
+        RenamingMessage:SetPoint("CENTER", 0, 200)
+        RenamingMessage:SetBackdrop({
+            bgFile = "Interface/Tooltips/UI-Tooltip-Background",
+            edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
+            edgeSize = 12,
+            insets = { left = 1, right = 1, top = 1, bottom = 1 },
+        })
+        RenamingMessage:SetBackdropColor(0.25, 0.25, 0.25, 0.80)
+
+        RenamingMessage.Header = RenamingMessage:CreateFontString("RenamingMessage", "ARTWORK", "GameFontNormalHuge")
+        RenamingMessage.Header:SetSize(RenamingMessage:GetWidth() - 10, 50)
+        RenamingMessage.Header:SetPoint("TOP", 0, -5)
+        RenamingMessage.Header:SetText("|cFF00FF00AzerPUG's Korthia Quests\nAddOn is being Renamed!|r")
+
+        RenamingMessage.Message = RenamingMessage:CreateFontString("RenamingMessage", "ARTWORK", "GameFontNormal")
+        RenamingMessage.Message:SetSize(RenamingMessage:GetWidth() - 10, 140)
+        RenamingMessage.Message:SetPoint("TOP", 0, -55)
+        RenamingMessage.Message:SetText(
+            "Due to the popularity of this AddOn, we are upgrading it!\n" ..
+            "Soon this AddOn will be renamed to ZoneQuests!\n" ..
+            "Over the next few weeks, we will slowly be adding Zereth Mortis functionality.\n" ..
+            "We will of course also make it possible to still check your Korthia things!\n"
+        )
+
+        RenamingMessage.CloseButton = CreateFrame("Button", nil, RenamingMessage, "UIPanelCloseButton")
+        RenamingMessage.CloseButton:SetSize(25, 25)
+        RenamingMessage.CloseButton:SetPoint("TOPRIGHT", RenamingMessage, "TOPRIGHT", 2, 2)
+        RenamingMessage.CloseButton:SetScript("OnClick", function() messageShow = true RenamingMessage:Hide() end )
+    end
 end
 
 function AZP.KorthiaQuests:CreateUserFrame()
@@ -35,14 +70,14 @@ function AZP.KorthiaQuests:CreateUserFrame()
         insets = { left = 1, right = 1, top = 1, bottom = 1 },
     })
     AZPKQSelfFrame:SetBackdropColor(0.25, 0.25, 0.25, 0.80)
-    AZPKQSelfFrame.header = AZPKQSelfFrame:CreateFontString("AZPKQSelfFrame", "ARTWORK", "GameFontNormalHuge")
-    AZPKQSelfFrame.header:SetPoint("TOP", 0, -10)
-    AZPKQSelfFrame.header:SetText("|cFF00FFFFAzerPUG's Korthia Quests|r")
+    AZPKQSelfFrame.Header = AZPKQSelfFrame:CreateFontString("AZPKQSelfFrame", "ARTWORK", "GameFontNormalHuge")
+    AZPKQSelfFrame.Header:SetPoint("TOP", 0, -10)
+    AZPKQSelfFrame.Header:SetText("|cFF00FFFFAzerPUG's Korthia Quests|r")
 
-    AZPKQSelfFrame.closeButton = CreateFrame("Button", nil, AZPKQSelfFrame, "UIPanelCloseButton")
-    AZPKQSelfFrame.closeButton:SetSize(25, 25)
-    AZPKQSelfFrame.closeButton:SetPoint("TOPRIGHT", AZPKQSelfFrame, "TOPRIGHT", 2, 2)
-    AZPKQSelfFrame.closeButton:SetScript("OnClick", function() AZP.KorthiaQuests:ShowHideFrame() end )
+    AZPKQSelfFrame.CloseButton = CreateFrame("Button", nil, AZPKQSelfFrame, "UIPanelCloseButton")
+    AZPKQSelfFrame.CloseButton:SetSize(25, 25)
+    AZPKQSelfFrame.CloseButton:SetPoint("TOPRIGHT", AZPKQSelfFrame, "TOPRIGHT", 2, 2)
+    AZPKQSelfFrame.CloseButton:SetScript("OnClick", function() AZP.KorthiaQuests:ShowHideFrame() end )
 
     if AZPKQSelfFrame.QuestIDLabels == nil then AZPKQSelfFrame.QuestIDLabels = {} end
     if AZPKQSelfFrame.QuestNameLabels == nil then AZPKQSelfFrame.QuestNameLabels = {} end
