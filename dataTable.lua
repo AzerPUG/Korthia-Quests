@@ -6,6 +6,23 @@ AZP.ZoneQuests.Textures =
     PlusButton = GetFileIDFromPath("Interface\\BUTTONS\\UI-PlusButton-Up.blp"),
     MinusButton = GetFileIDFromPath("Interface\\BUTTONS\\UI-MinusButton-Up.blp"),
 }
+AZP.ZoneQuests.QuestZones =
+{
+    ZerethMortis =
+    {
+        Name = "Zereth\nMortis",
+        Index = 1,
+        Active = "Soon",
+        FileID = GetFileIDFromPath("Interface\\ICONS\\INV_Misc_QuestionMark.blp"),
+    },
+    Korthia =
+    {
+        Name = "Korthia",
+        Index = 2,
+        Active = true,
+        FileID = GetFileIDFromPath("Interface\\ICONS\\INV_Misc_PaperBundle04a.blp"),
+    },
+}
 
 AZP.ZoneQuests.Quests =
 {

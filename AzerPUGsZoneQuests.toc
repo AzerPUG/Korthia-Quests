@@ -1,12 +1,11 @@
 ## Interface: 90100
-## Title: |cFF00FFFFAzerPUG's|r |cFFFF00FFZerethMortis Quests|r
+## Title: |cFF00FFFFAzerPUG's|r |cFFFF00FFKorthia Quests|r
 ## Author: Tex & AzerPUG Gaming Community (www.azerpug.com/discord)
 ## Notes: A Quest List AddOn for specific important current-content zones.
 ## Version: SL 9.1.5 (For actual addon version, check ZoneQuests.lua)
-## SavedVariablesPerCharacter: AZPKQFrameLocation
+## SavedVariablesPerCharacter: AZPKQFrameLocation AZPZQTempVar
 
 dataTable.lua
 SlashCommands.lua
 ZoneQuests.lua
 KorthiaQuests.lua
-ZerrethMortisQuests.lua
