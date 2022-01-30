@@ -129,6 +129,8 @@ AZP.ZoneQuests.Quests =
         [64878] = {Name = "What A Long Strange Trip"},
         [64888] = {Name = "Borrowed Power"},
         [65245] = {Name = "Pop Goes the Devourer!"},
+        [64935] = {Name = "Between A Rock & A Rock"},
+        [64889] = {Name = "Match Made in Zereth Mortis"},
         [64936] = {Name = "Searching High and Low"},
         [64937] = {Name = "You Light Up My Life"},
         [65237] = {Name = "Oracle, Heal Thyself"},
