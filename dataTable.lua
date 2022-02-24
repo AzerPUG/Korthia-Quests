@@ -34,12 +34,12 @@ AZP.ZoneQuests.Quests =
             [        "Into the Unknown"] = {64942, 64944, 64945, 65456, 64947, 64949, 64950, 64951, 65271, 64952, 64953, 64957, 64958},
             [        "We Battle Onward"] = {64794, 64796, 64797, 64814, 64815, 64817, 64818, 64820, 64821, 64822, 64823, 64824, 64825},
             ["Forming an Understanding"] = {64218, 64219, 64223, 64224, 64225, 64226, 64227, 64228, 65149, 64230, 65305},
-            [      "Forging a New Path"] = {65335, 64830, 64833, 64832, 64831, 64837, 64834, 64838, 64969, 64835, 64836, 64839, 64841, 64840, 65331}, -- {64799, 64800, 64802, 64801, 64804, 64803, 64805, 64853},
-            [          "Crown of Wills"] = {64809, 64811, 64810, 64806, 64807, 64808, 64798, 64812, 64813},
-            [       "A Means To An End"] = {64875, 64876, 64878, 64888, 65245, 64936, 64937, 65237},
+            [      "Forging a New Path"] = {65335, 64830, 64833, 64832, 64831, 64837, 64834, 64838, 64969, 64835, 64836, 64839, 64841, 64840, 65331, 64842, 64843, 64844},
+            [          "Crown of Wills"] = {64799, 64800, 64802, 64803, 64801, 64804, 64805, 64853, 64809, 64811, 64810, 64806, 64807, 64808, 64798, 64812, 64813},
+            [       "A Means To An End"] = {64875, 64876, 64878, 64888, 65245, 64935, 64889, 64936, 64937, 65237},
             [           "Starting Over"] = {65328, 64879, 64723, 64733, 64718, 64720, 64706, 64722, 64727, 64726, 64725, 64962, 64728, 64730, 64731, 64729, 65238},
-            [     "Epilogue; Judgement"] = {65329},
-            [            "Other Quests"] = {64960},
+            [     "Epilogue; Judgement"] = {65768},
+            [            "Other Quests"] = {65329, 64816, 64771, 00000},
         },
 
         [00000] = {Name = "Coming Soon™"},
@@ -99,7 +99,6 @@ AZP.ZoneQuests.Quests =
         [64841] = {Name = "Take Charge"},
         [64840] = {Name = "Unchecked Growth"},
         [65331] = {Name = "Herbal Remedies"},
-
         [64842] = {Name = "Catalyst Crush"},
         [64843] = {Name = "Key Crafting"},
         [64844] = {Name = "The Pilgrimage Ends"},
@@ -122,7 +121,6 @@ AZP.ZoneQuests.Quests =
         [64798] = {Name = "What We Overcome"},
         [64812] = {Name = "Forge of Domination"},
         [64813] = {Name = "The Crown of Wills"},
-        [64816] = {Name = "Reality's Doorstep"},
 
         [64875] = {Name = "Something Wonderful"},
         [64876] = {Name = "Music of the Spheres"},
@@ -153,9 +151,11 @@ AZP.ZoneQuests.Quests =
         [64729] = {Name = "Lifetimes To Consider"},
         [65238] = {Name = "Souls Entwined"},
 
-        [65329] = {Name = "Safe Haven"},
+        [65768] = {Name = "Our Forward Scouts"},
 
-        [64960] = {Name = "Englightened Exodus"},
+        [65329] = {Name = "Safe Haven"},
+        [64816] = {Name = "Reality's Doorstep"},
+        [64771] = {Name = "Enlightened Exodus"},
         [65431] = {Name = "Further Research: Aealic"},
     },
     Korthia =
@@ -178,29 +178,5 @@ AZP.ZoneQuests.Quests =
         [63920] = {Name =             "Enigmatic Decrypting Device", Location = {xVal = 51.8, yVal = 52.4,},},
         [63921] = {Name =                 "Ring of Self Reflection", Location = {xVal = 43.8, yVal = 77.0,},},
         [63924] = {Name =                       "Gorak Claw Fetish", Location = {xVal = 43.5, yVal = 57.4,},},
-    },
-}
-
-AZP.ZoneQuests.BossInfo =
-{
-    Tarragrue =
-    {
-        Name = "Tarragrue",
-        ID = 2423,
-        Index = 1,
-        Active = "Soon",
-        FileID = GetFileIDFromPath("Interface\\ENCOUNTERJOURNAL\\UI-EJ-BOSS-Tarragrue.blp"),
-    },
-    TheEye =
-    {
-        Name = "The Eye",
-        ID = 2433,
-        Index = 2,
-        Active = true,
-        FileID = GetFileIDFromPath("Interface\\ENCOUNTERJOURNAL\\UI-EJ-BOSS- Eye of the Jailer.blp"),
-        Spells =
-        {
-            StygianEjection = 348117,
-        },
     },
 }

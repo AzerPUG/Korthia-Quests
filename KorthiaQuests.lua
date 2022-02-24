@@ -130,5 +130,3 @@ function AZP.ZoneQuests.Korthia.Events:VariablesLoaded()
 end
 
 AZP.ZoneQuests.Korthia:OnLoadSelf()
-
-
