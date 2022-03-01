@@ -1,7 +1,7 @@
 if AZP == nil then AZP = {} end
 if AZP.VersionControl == nil then AZP.VersionControl = {} end
 
-AZP.VersionControl["ZoneQuests"] = 10
+AZP.VersionControl["ZoneQuests"] = 11
 if AZP.ZoneQuests == nil then AZP.ZoneQuests = {} end
 if AZP.ZoneQuests.Events == nil then AZP.ZoneQuests.Events = {} end
 
